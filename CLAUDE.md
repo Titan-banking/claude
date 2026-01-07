@@ -51,6 +51,25 @@ ci(docker): optimize image build size
 - **Do NOT include file lists** - git tracks changes automatically
 - Keep commit messages focused and concise
 
+## Git Safety Protocol
+
+**IMPORTANT**: Follow these safety rules when working with git:
+
+- **NEVER force push** (`git push --force` or `git push -f`) unless the user explicitly requests it
+- **NEVER force push to main/master** - warn the user if they request this
+- **NEVER run destructive/irreversible git commands** (like `git reset --hard`, `git clean -fd`) unless explicitly requested
+- **NEVER skip hooks** (`--no-verify`, `--no-gpg-sign`) unless the user explicitly requests it
+- **NEVER update git config** without explicit user permission
+- **Avoid `git commit --amend`** - only use when: (1) user explicitly requested amend, OR (2) fixing pre-commit hook changes on YOUR OWN commit
+- **Before amending**: ALWAYS check authorship with `git log -1 --format='%an %ae'` to verify it's your commit
+- **Prefer `git push --force-with-lease`** over `--force` when force push is explicitly requested (safer)
+
+When resolving merge conflicts after rebase:
+1. Fix the conflicts manually
+2. Stage the resolved files with `git add`
+3. Continue with `git rebase --continue`
+4. **Ask the user** before force pushing the rebased branch
+
 ## Creating Pull Requests
 
 **IMPORTANT**: When creating pull requests, always follow these conventions:
@@ -183,7 +202,7 @@ JIRA-TICKET: One sentence summary of changes
 **Step 5: Extract PR Information**
 
 Use git commands to determine:
-- **Branch name**: Extract Jira ticket ID (e.g., `ks/TITAN-39` ’ `TITAN-39`)
+- **Branch name**: Extract Jira ticket ID (e.g., `ks/TITAN-39` ï¿½ `TITAN-39`)
 - **Commit messages**: Use recent commits to understand what was done
 - **File changes**: Use `git diff --stat` to see which files/areas were modified
 - **Scope**: Number of files changed indicates complexity
@@ -486,7 +505,7 @@ mcp__atlassian__addCommentToJiraIssue(
 2. **Update descriptions comprehensively** - Include problem statement, solution, technical details, and PR links
 3. **Use Markdown formatting** - JIRA supports Markdown in descriptions and comments
 4. **Link PRs to tickets** - Always mention PR numbers and links in ticket comments
-5. **Keep tickets updated** - Transition status as work progresses (To Do ’ In Progress ’ Done)
+5. **Keep tickets updated** - Transition status as work progresses (To Do ï¿½ In Progress ï¿½ Done)
 6. **Search before creating** - Use JQL to check if similar issues exist
 
 ### JIRA + GitHub Workflow
